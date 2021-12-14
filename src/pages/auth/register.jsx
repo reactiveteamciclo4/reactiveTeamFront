@@ -41,18 +41,18 @@ const Register = () => {
           <Input label='Apellido:' name='apellido' type='text' required />
           <Input label='Documento:' name='identificacion' type='text' required />
           <Input label='Correo:' name='correo' type='email' required />
-          <DropDown label='Rol deseado:' name='rol' required={true} options={Enum_Rol} />
+          <DropDown label='Cargo:' name='rol' required={true} options={Enum_Rol} />
           <Input label='Contraseña:' name='password' type='password' required />
         </div>
         <ButtonLoading
           disabled={Object.keys(formData).length === 0}
           loading={false}
-          text='Registrarme'
+          text='GUARDAR'
         />
       </form>
-      <span>¿AÚN NO TE HAS REGISTRADO?</span>
+      <span>¿YA ESTÁS REGISTRADO?</span>
       <Link to='/auth/login'>
-        <span className='text-green-700'>INICIO DE SESIÓN</span>
+        <span className='text-blue-700'>INICIAR SESIÓN</span>
       </Link>
     </div>
   );

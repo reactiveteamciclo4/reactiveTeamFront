@@ -5,18 +5,19 @@ import PrivateComponent from './PrivateComponent';
 
 const SidebarLinks = () => {
   return (
+    
     <ul className='mt-12'>
-      <SidebarRoute to='' title='Inicio' icon='fas fa-home' />
+      <SidebarRoute to='' title='Inicio' icon='fas fa-house-user' />
       <PrivateComponent roleList={['ADMINISTRADOR']}>
-        <SidebarRoute to='/usuarios' title='Usuarios' icon='fas fa-user' />
+        <SidebarRoute to='/usuarios' title='Usuarios' icon='fas fa-user-tie' />
       </PrivateComponent>
-      <SidebarRoute to='/proyectos' title='Proyectos' icon='fas fa-smile-wink' />
+      <SidebarRoute to='/proyectos' title='Proyectos' icon='fas fa-chess-rook' />
       <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>
-        <SidebarRoute to='/inscripciones' title='Aprobacion Inscripciones' icon='fas fa-user' />
+        <SidebarRoute to='/inscripciones' title='Aprobacion Inscripciones' icon='fas fa-tasks' />
       </PrivateComponent>
-      <SidebarRoute to='/page2' title='Pagina2' icon='fas fa-smile-wink' />
-      <SidebarRoute to='/category1' title='Catego 1' icon='fab fa-amazon' />
-      <SidebarRoute to='/category1/page1' title='Test' icon='fas fa-car' />
+      <SidebarRoute to='/page2' title='Avances' icon='fas fa-shoe-prints' />
+      <SidebarRoute to='/category1' title='Inscripción' icon='fas fa-clipboard-list' />
+      <SidebarRoute to='/category1/page1' title='Test' icon='fas fa-clipboard-check' />
       <Logout />
     </ul>
   );
@@ -32,7 +33,7 @@ const Logout = () => {
     <li onClick={() => deleteToken()}>
       <NavLink to='/auth/login' className='sidebar-route text-red-700'>
         <div className='flex items-center'>
-          <i className='fas fa-sign-out-alt' />
+          <i className='fas fa-door-open' />
           <span className='text-sm  ml-2'>Cerrar Sesión</span>
         </div>
       </NavLink>
@@ -94,8 +95,8 @@ const SidebarRoute = ({ to, title, icon }) => {
         to={to}
         className={({ isActive }) =>
           isActive
-            ? 'sidebar-route text-white bg-indigo-700'
-            : 'sidebar-route text-gray-900 hover:text-white hover:bg-indigo-400'
+            ? 'sidebar-route text-white bg-green-600'
+            : 'sidebar-route text-gray-900 hover:text-white hover:bg-green-400'
         }
       >
         <div className='flex items-center'>
