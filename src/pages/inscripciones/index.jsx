@@ -1,55 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
 import PrivateRoute from 'components/PrivateRoute';
 import { GET_INSCRIPCIONES } from 'graphql/inscripciones/queries';
 import { APROBAR_INSCRIPCION, RECHAZAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 import ButtonLoading from 'components/ButtonLoading';
-import {
-  AccordionStyled,
-  AccordionSummaryStyled,
-  AccordionDetailsStyled,
-} from 'components/Accordion';
 
 const IndexInscripciones = () => {
-  const { data, error, loading } = useQuery(GET_INSCRIPCIONES);
+  const { data, loading, error, refetch} = useQuery(GET_INSCRIPCIONES);
+
+  useEffect(() => {
+    if (data) {
+      toast.success('Inscripcion consultada con exito');
+      refetch();
+    }
+  }, [data]);
 
   useEffect(() => {
     if (error) {
-      toast.error('Error consultando avances');
+      toast.error('Error consultando la inscripcion');
     }
   }, [error]);
-
   if (loading) return <div>Cargando....</div>;
 
   return (
       <div>
-        Datos Usuarios:
+        INSCRIPCIONES PENDIENTES:
         <table className='tabla'>
           <thead>
             <tr>
-              <th>Fecha</th>
-              <th>Descripcion</th>
-              <th>Observaciones</th>
-              <th>Nombre Proyecto</th>
-              <th>Lider</th>
-              <th>Creado Por</th>
+              <th>Id</th>
+              <th>Proyecto</th>
+              <th>Estudiante</th>
+              <th>Estado</th>
+              {/* <th>Fecha Ingreso</th> */}
+              <th>Actualizar Estado</th>
             </tr>
           </thead>
           <tbody>
-            {data && data.Inscripciones ? (
+            {data && 
+            data.InscripcionesPendientes ? (
               <>
-                {data.Inscripciones.map((u) => {
+                {data.InscripcionesPendientes.map((u) => {
                   return (
                     <tr key={u._id}>
-                      <td>{u.fechaIngreso}</td>
-                      <td>{u.fechaEgreso}</td>
+                      <td>{u._id.slice(20)}</td>
+                      <td>{u.proyecto.nombre}</td>
+                      <td>{u.estudiante.nombre} {u.estudiante.apellido}</td>
+                      <td>{u.estado}</td>
+                      {/* <td>{u.fechaIngreso}</td> */}
 
                       <td>
-                        <Link to={`/usuarios/editar/${u._id}`}>
-                          <i className='fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer' />
-                        </Link>
+                      <button> <Aprobar /> </button>
+                      <span> </span> <span> </span>
+                      <button> <Rechazar /> </button>
                       </td>
                     </tr>
                   );
@@ -61,8 +65,78 @@ const IndexInscripciones = () => {
           </tbody>
         </table>
       </div>
-  
   );
 };
+
+
+const Aprobar = () => {
+  const [aprobarInscripcion, { data, loading, error, refetch }] = useMutation(APROBAR_INSCRIPCION);
+
+  useEffect(() => {
+    if (data) {
+      toast.success('Inscripcion aprobada con exito');
+      refetch();}
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error('Error aprobando la inscripcion');
+    }
+  }, [error]);
+
+  const aprobarI = ()=> {
+    aprobarInscripcion({
+      variables: {
+        AprobarInscripcionId: Aprobar._id,
+      },
+    });
+  };
+
+  return (
+    <ButtonLoading onClick={() => {
+      aprobarI();
+      }}
+      text='Aceptar'
+      loading={loading}
+      disabled={false}
+    />
+  )}
+
+const Rechazar = ({ inscripcion, refetch }) => {
+  const [rechazarInscripcion, { data, loading, error }] = useMutation(RECHAZAR_INSCRIPCION);
+  
+    useEffect(() => {
+      if (data) {
+        toast.success('Inscripcion rechazada');
+        refetch();}
+    }, [data]);
+  
+    useEffect(() => {
+      if (error) {
+        toast.error('Error rechazando la inscripcion');
+      }
+    }, [error]);
+  
+    const rechazarI = ()=> {
+    data.InscripcionesPendientes.map((u) => {
+              <Rechazar inscripcion={u} refetch={refetch} />
+      rechazarInscripcion({
+        variables: {
+          RechazarInscripcionId: u._id,
+        },
+      })
+    })
+  }
+  
+    return (
+      <ButtonLoading onClick={() => {
+        rechazarI();
+        }}
+        text='Rechazar'
+        loading={loading}
+        disabled={false}
+      />
+    )
+}
 
 export default IndexInscripciones;

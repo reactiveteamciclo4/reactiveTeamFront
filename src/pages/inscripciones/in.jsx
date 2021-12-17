@@ -103,3 +103,37 @@ return (
   </div>
 ); 
 export default IndexInscripciones;
+
+
+
+<tbody>
+          
+{data && data.InscripcionesPendientes ? (
+  <>
+    {data.InscripcionesPendientes.map((u) => {
+      return (
+        <tr key={u._id}>
+          <td>{u._id.slice(20)}</td>
+          <td>{u.proyecto.nombre}</td>
+          <td>{u.estudiante.nombre} {u.estudiante.apellido}</td>
+          <td>{u.estado}</td>
+          <td>{u.fechaIngreso}</td>
+
+          <td>
+            <Link to={`/usuarios/editar/${u._id}`}>
+              <i className='fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer' />
+              {/* <ToastContainer position='bottom-center' autoClose={5000} /> */}
+            </Link>
+          </td>
+        </tr>
+      );
+    })}
+  </>
+) : (
+  <div>No autorizado</div>
+)}
+</tbody>
+</table>
+</div></div>
+);       
+};
