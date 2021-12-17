@@ -13,112 +13,56 @@ import {
 } from 'components/Accordion';
 
 const IndexInscripciones = () => {
-  const { data, error, loading, refetch } = useQuery(GET_INSCRIPCIONES);
-  
-  useEffect(() => {
-    if (data) {
-      toast.success('Inscripciones consultadas con exito');
-      refetch();
-    }
-  }, [data]);
+  const { data, error, loading } = useQuery(GET_INSCRIPCIONES);
 
   useEffect(() => {
     if (error) {
-      toast.error('Error consultado inscripciones');
+      toast.error('Error consultando avances');
     }
   }, [error]);
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading) return <div>Cargando....</div>;
 
   return (
-    //<PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}>
-      <div className='p-10'>
-        <div>Pagina de inscripciones</div>
-        <div className='my-4'>
+      <div>
+        Datos Usuarios:
+        <table className='tabla'>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Descripcion</th>
+              <th>Observaciones</th>
+              <th>Nombre Proyecto</th>
+              <th>Lider</th>
+              <th>Creado Por</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data && data.Inscripciones ? (
+              <>
+                {data.Inscripciones.map((u) => {
+                  return (
+                    <tr key={u._id}>
+                      <td>{u.fechaIngreso}</td>
+                      <td>{u.fechaEgreso}</td>
 
-        <AccordionInscripcion
-            titulo='Inscripciones'
-            data={data.Inscripciones}
-          />
-
-          {/* <AccordionInscripcion
-            titulo='Inscripciones aprobadas'
-            data={data.Inscripciones.filter((el) => el.estado === 'ACEPTADO')}
-          />
-          <AccordionInscripcion
-            titulo='Inscripciones pendientes'
-            data={data.Inscripciones.filter((el) => el.estado === 'PENDIENTE')}
-            refetch={refetch}
-          />
-          <AccordionInscripcion
-            titulo='Inscripciones rechazadas'
-            data={data.Inscripciones.filter((el) => el.estado === 'RECHAZADO')}
-          />  */}
-        </div>
+                      <td>
+                        <Link to={`/usuarios/editar/${u._id}`}>
+                          <i className='fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer' />
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </>
+            ) : (
+              <div>No autorizado</div>
+            )}
+          </tbody>
+        </table>
       </div>
-    //</PrivateRoute>
-  );
-};
-  const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => {
-  return (
-    <AccordionStyled>
-      <AccordionSummaryStyled>
-        {titulo} ({data.length})
-      </AccordionSummaryStyled>
-      <AccordionDetailsStyled>
-        <div className='flex'>
-          {data &&
-            data.map((inscripcion) => {
-              <Inscripcion inscripcion={inscripcion} refetch={refetch} />;
-            })}
-        </div>
-      </AccordionDetailsStyled>
-    </AccordionStyled>
-  );
-};
-
-const Inscripcion = ({inscripcion, refetch }) => {
-  const [aprobarInscripcion, { data, loading, error }] = useMutation(APROBAR_INSCRIPCION);
-
-  useEffect(() => {
-    if (data) {
-      toast.success('Inscripcion aprobada con exito');
-      refetch();
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (error) {
-      toast.error('Error aprobando la inscripcion');
-    }
-  }, [error]);
   
-  if (loading) return <div>Cargando...</div>;
-
-const cambiarEstadoInscripcion = () => {
-  aprobarInscripcion({
-    variables: {
-      aprobarInscripcionId: inscripcion._id,
-    },
-  });
+  );
 };
-
-return (
-  <div className='bg-gray-900 text-gray-50 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
-    <span>{inscripcion.proyecto.nombre}</span>
-    <span>{inscripcion.estudiante.nombre}</span>
-    <span>{inscripcion.estado}</span>
-    {inscripcion.estado === 'PENDIENTE' && (
-      <ButtonLoading
-        onClick={() => {
-          cambiarEstadoInscripcion();
-        }}
-        text='Aprobar Inscripcion'
-        //loading={loading}
-        disabled={false}
-      />
-    )}
-  </div>
-)}; 
 
 export default IndexInscripciones;
