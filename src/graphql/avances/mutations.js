@@ -2,26 +2,56 @@ import { gql } from '@apollo/client';
 
 const EDITAR_AVANCE= gql`
 mutation EditarAvance(
-  $_id: String!, 
-  $fecha: Date!, 
+  $_id: String!,  
   $descripcion: String!, 
-  $observaciones: String!, 
  
   ) {
   editarAvance(
     _id: $_id, 
-    fecha: $fecha, 
     descripcion: $descripcion, 
-    observaciones: $observaciones
     
     ) {
-    
-    fecha
     descripcion
-    observaciones
   }
   
 }
 `;
 
-export { EDITAR_AVANCE};
+const AGREGAR_OBSERVACIONES= gql`
+mutation CrearObservacionesAvance(
+  $_id: String!, 
+  $observaciones: [String]!
+  ) {
+  crearObservacionesAvance(
+  _id: $_id, 
+    observaciones: $observaciones
+    ) {
+    observaciones
+  }
+}
+
+`;
+
+const CREAR_AVANCE= gql`
+mutation CrearAvance(
+  $fecha: Date!, 
+  $descripcion: String!, 
+  $proyecto: String!, 
+  $creadoPor: String!) {
+  crearAvance(
+    fecha: $fecha, 
+    descripcion: $descripcion, 
+    proyecto: $proyecto, 
+    creadoPor: $creadoPor) 
+    {
+      fecha
+      descripcion
+      proyecto
+      creadoPor
+    
+  }
+}
+
+`;
+
+export { EDITAR_AVANCE, AGREGAR_OBSERVACIONES, CREAR_AVANCE};

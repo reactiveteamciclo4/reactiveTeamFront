@@ -21,6 +21,7 @@ import NuevoProyecto from 'pages/proyectos/NuevoProyecto';
 import IndexInscripciones from 'pages/inscripciones';
 import IndexAvances from 'pages/avances';
 import EditarAvance from 'pages/avances/editar';
+import NuevoAvance from 'pages/avances/NuevoAvance';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
@@ -86,6 +87,7 @@ function App() {
                 <Route path='/inscripciones' element={<IndexInscripciones />} />
                 <Route path='/avances' element={<IndexAvances/>} />
                 <Route path='/avances/editar/:_id' element={<EditarAvance/>} />
+                <Route path='/avances/nuevo' element={<NuevoAvance />} />
                 <Route path='category1' element={<IndexCategory1 />} />
                 <Route path='category1/page1' element={<Category1 />} />
               </Route>
