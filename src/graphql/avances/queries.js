@@ -25,14 +25,22 @@ query Avances {
   }
 }
 `;
-/*
-const GET_AVANCESPROYECTO = gql`
-query FiltrarAvance($idProyecto: String!) {
-  filtrarAvance(idProyecto: $idProyecto) {
+
+
+const GET_AVANCE = gql`
+query Avance($_id: String!) {
+  Avance(_id: $_id) {
     _id
     fecha
     descripcion
     observaciones
+    proyecto {
+      _id
+      nombre
+      lider {
+        _id
+        nombre
+      }
     }
     creadoPor {
       _id
@@ -41,9 +49,10 @@ query FiltrarAvance($idProyecto: String!) {
       correo
     }
   }
+}
 
 
-`;*/
+`;
 
 
-export { GET_AVANCES };
+export { GET_AVANCES, GET_AVANCE};
