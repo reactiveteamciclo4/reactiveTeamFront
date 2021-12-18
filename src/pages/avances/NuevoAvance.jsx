@@ -69,7 +69,7 @@ const NuevoAvance = () => {
       <form ref={form} onChange={updateFormData} onSubmit={submitForm}>
         <Input name='fecha' label='Fecha' required={true} type='date' />
         <Input name='descripcion' label='Descripción' required={true} type='text' />
-        <Input name='creadoPor' label='Avance creado por:' required={true} type='text' />
+        <Input name='creadoPor' label='Avance creado:' required={true} type='text' />
         <Input name='proyecto' label='proyecto' required={true} type='text' />
       
         
