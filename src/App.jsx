@@ -24,7 +24,7 @@ import EditarAvance from 'pages/avances/editar';
 import NuevoAvance from 'pages/avances/NuevoAvance';
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: 'https://servidor-reactive-team.herokuapp.com/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
