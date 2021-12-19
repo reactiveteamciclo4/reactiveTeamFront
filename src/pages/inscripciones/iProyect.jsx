@@ -1,3 +1,31 @@
+import {render, screen, waitFor} from '@testing-library/react;
+import { UserContext } from 'context/userContext';
+import IndexInscripciones from 'pages/inscripciones';
+
+it ('fetchets info from ')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useEffect, useState  } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import PrivateRoute from 'components/PrivateRoute';
