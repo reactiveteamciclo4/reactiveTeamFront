@@ -1,4 +1,4 @@
-import {render, screen, waitFor} from '@testing-library/react;
+//import {render, screen, waitFor} from '@testing-library/react;
 import { UserContext } from 'context/userContext';
 import IndexInscripciones from 'pages/inscripciones';
 
