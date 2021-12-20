@@ -8,7 +8,7 @@ import PrivateComponent from 'components/PrivateComponent';
 
 
 const IndexAvances = () => {
-  const { data, error, loading } = useQuery(GET_AVANCES);
+  const { data, error, loading, refetch} = useQuery(GET_AVANCES);
 
   useEffect(() => {
     if (error) {
@@ -41,7 +41,6 @@ const IndexAvances = () => {
               <th>Avance Creado Por</th>
               <th>Editar Avance</th>
               <th>Agregar Observación</th>
-
             </tr>
           </thead>
           <tbody>
@@ -56,6 +55,7 @@ const IndexAvances = () => {
                       <td>{avance.proyecto.nombre}</td>
                       <td>{avance.proyecto.lider.nombre}</td>
                       <td>{avance.creadoPor.nombre}</td>
+                     
                       <td>
                         <Link to={`/avances/editar/${avance._id}`}>
                           <i className='fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer' />
@@ -66,7 +66,9 @@ const IndexAvances = () => {
                           <i className='fas fa-plus text-yellow-600 hover:text-yellow-400 cursor-pointer' />
                         </Link>
                       </td>
+                      
                     </tr>
+                   
                   );
                 })}
               </>
@@ -74,7 +76,9 @@ const IndexAvances = () => {
               <div>No autorizado</div>
             )}
           </tbody>
+          
         </table>
+       
       </div>
       
       
