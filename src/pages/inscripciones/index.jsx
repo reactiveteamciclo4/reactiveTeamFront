@@ -1,142 +1,107 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { toast } from 'react-toastify';
 import PrivateRoute from 'components/PrivateRoute';
 import { GET_INSCRIPCIONES } from 'graphql/inscripciones/queries';
 import { APROBAR_INSCRIPCION, RECHAZAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 import ButtonLoading from 'components/ButtonLoading';
+import { toast } from 'react-toastify';
+import {
+  AccordionStyled,
+  AccordionSummaryStyled,
+  AccordionDetailsStyled,
+} from 'components/Accordion';
 
 const IndexInscripciones = () => {
-  const { data, loading, error, refetch} = useQuery(GET_INSCRIPCIONES);
+  // falta capturar error de query
+  const { data, loading, refetch } = useQuery(GET_INSCRIPCIONES);
 
-  useEffect(() => {
-    if (data) {
-      toast.success('Inscripcion consultada con exito');
-      refetch();
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (error) {
-      toast.error('Error consultando la inscripcion');
-    }
-  }, [error]);
-  if (loading) return <div>Cargando....</div>;
-
+  if (loading) return <div>Loading...</div>;
   return (
-      <div>
-        INSCRIPCIONES PENDIENTES:
-        <table className='tabla'>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Proyecto</th>
-              <th>Estudiante</th>
-              <th>Estado</th>
-              {/* <th>Fecha Ingreso</th> */}
-              <th>Actualizar Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data && 
-            data.InscripcionesPendientes ? (
-              <>
-                {data.InscripcionesPendientes.map((u) => {
-                  return (
-                    <tr key={u._id}>
-                      <td>{u._id.slice(20)}</td>
-                      <td>{u.proyecto.nombre}</td>
-                      <td>{u.estudiante.nombre} {u.estudiante.apellido}</td>
-                      <td>{u.estado}</td>
-                      {/* <td>{u.fechaIngreso}</td> */}
 
-                      <td>
-                      <button> <Aprobar /> </button>
-                      <span> </span> <span> </span>
-                      <button> <Rechazar /> </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </>
-            ) : (
-              <div>No autorizado</div>
-            )}
-          </tbody>
-        </table>
+      <div className='p-10'>
+        <div>Pagina de inscripciones</div>
+        <div className='my-4'>
+          <AccordionInscripcion
+            titulo='Inscripciones aprobadas'
+            data={data.Inscripciones.filter((el) => el.estado === 'ACEPTADO')}
+          />
+          <AccordionInscripcion
+            titulo='Inscripciones pendientes'
+            data={data.Inscripciones.filter((el) => el.estado === 'PENDIENTE')}
+            refetch={refetch}
+            
+          />
+          <AccordionInscripcion
+            titulo='Inscripciones rechazadas'
+            data={data.Inscripciones.filter((el) => el.estado === 'RECHAZADO')}
+          />
+        </div>
       </div>
   );
 };
 
+const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => (
+  <AccordionStyled>
+    <AccordionSummaryStyled>
+      {titulo} ({data.length})
+    </AccordionSummaryStyled>
+    <AccordionDetailsStyled>
+      <div className='flex'>
+        {data &&
+          data.map((inscripcion) => (
+            <Inscripcion inscripcion={inscripcion} refetch={refetch} />
+          ))}
+      </div>
+    </AccordionDetailsStyled>
+  </AccordionStyled>
+);
 
-const Aprobar = () => {
-  const [aprobarInscripcion, { data, loading, error, refetch }] = useMutation(APROBAR_INSCRIPCION);
+const Inscripcion = ({ inscripcion, refetch }) => {
+  const [rechazarInscripcion, {data: mutationData, loading: mutationLoading, error: mutationError}] =
+    useMutation( RECHAZAR_INSCRIPCION );
+   
 
   useEffect(() => {
-    if (data) {
+    if (mutationData) {
       toast.success('Inscripcion aprobada con exito');
-      refetch();}
-  }, [data]);
+      refetch();
+    }
+  }, [mutationData]);
 
   useEffect(() => {
-    if (error) {
+    if (mutationError) {
       toast.error('Error aprobando la inscripcion');
     }
-  }, [error]);
+  }, [mutationError]);
 
-  const aprobarI = ()=> {
-    aprobarInscripcion({
+  const rInscripcion = () => {
+    rechazarInscripcion({
       variables: {
-        AprobarInscripcionId: Aprobar._id,
+        rechazarInscripcionId: inscripcion._id,
       },
     });
   };
 
   return (
-    <ButtonLoading onClick={() => {
-      aprobarI();
-      }}
-      text='Aceptar'
-      loading={loading}
-      disabled={false}
-    />
-  )}
-
-const Rechazar = ({ inscripcion, refetch }) => {
-  const [rechazarInscripcion, { data, loading, error }] = useMutation(RECHAZAR_INSCRIPCION);
-  
-    useEffect(() => {
-      if (data) {
-        toast.success('Inscripcion rechazada');
-        refetch();}
-    }, [data]);
-  
-    useEffect(() => {
-      if (error) {
-        toast.error('Error rechazando la inscripcion');
-      }
-    }, [error]);
-  
-    const rechazarI = ()=> {
-    data.InscripcionesPendientes.map((u) => {
-              <Rechazar inscripcion={u} refetch={refetch} />
-      rechazarInscripcion({
-        variables: {
-          RechazarInscripcionId: u._id,
-        },
-      })
-    })
-  }
-  
-    return (
-      <ButtonLoading onClick={() => {
-        rechazarI();
+    <div className='bg-white text-gray-500 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
+      <span>Proyecto: {inscripcion.proyecto.nombre}</span>
+      <span> Estudiante: {inscripcion.estudiante.nombre} {inscripcion.estudiante.apellido}</span>
+      <span>Estado: {inscripcion.estado}</span>
+      {inscripcion.estado === 'PENDIENTE'&& (
+        
+        <ButtonLoading
+        onClick={() => {
+          rInscripcion();
         }}
-        text='Rechazar'
-        loading={loading}
+        text='Rechazar Inscripcion'
+        mutationLoading={mutationLoading}
         disabled={false}
       />
-    )
-}
+      )
+      }
+      
+    </div>
+  );
+};
 
 export default IndexInscripciones;
