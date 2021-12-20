@@ -1,25 +1,25 @@
 import { gql } from '@apollo/client';
 
 const GET_INSCRIPCIONES = gql`
-  query Inscripciones {
-    Inscripciones {
+ query Inscripciones {
+   Inscripciones {
+    _id
+    estado
+    fechaIngreso
+    fechaEgreso
+    estudiante {
       _id
-      estado
-      estudiante {
-        _id
-        nombre
-        apellido
-        correo
+      nombre
+      apellido
+      correo
+      identificacion
       }
-      proyecto {
-        _id
-        nombre
-        lider {
-          _id
-        }
+    proyecto {
+      _id
+      nombre
       }
-    }
-  }
+   }
+}
 `;
 
-export { GET_INSCRIPCIONES };
+export { GET_INSCRIPCIONES};

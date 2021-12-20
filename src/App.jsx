@@ -19,12 +19,16 @@ import 'styles/globals.css';
 import 'styles/tabla.css';
 import NuevoProyecto from 'pages/proyectos/NuevoProyecto';
 import IndexInscripciones from 'pages/inscripciones';
+import { from } from 'apollo-boost';
 import IndexAvances from 'pages/avances';
 import EditarAvance from 'pages/avances/editar';
 import NuevoAvance from 'pages/avances/NuevoAvance';
 
 const httpLink = createHttpLink({
-  uri: 'https://servidor-reactive-team.herokuapp.com/graphql',
+  //uri: 'https://servidor-reactive-team.herokuapp.com/graphql',
+  //uri: 'https://front-reactive-team.herokuapp.com/'
+
+  uri: 'http://localhost:4000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {

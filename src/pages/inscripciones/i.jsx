@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import PrivateRoute from 'components/PrivateRoute';
 import { GET_INSCRIPCIONES } from 'graphql/inscripciones/queries';
-import { APROBAR_INSCRIPCION, RECHAZAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
+import { APROBAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 import ButtonLoading from 'components/ButtonLoading';
 import { toast } from 'react-toastify';
 import {
@@ -12,12 +12,15 @@ import {
 } from 'components/Accordion';
 
 const IndexInscripciones = () => {
-  // falta capturar error de query
-  const { data, loading, refetch } = useQuery(GET_INSCRIPCIONES);
+const { data, loading, error, refetch } = useQuery(GET_INSCRIPCIONES);
 
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   if (loading) return <div>Loading...</div>;
+  
   return (
-
+    <PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}>
       <div className='p-10'>
         <div>Pagina de inscripciones</div>
         <div className='my-4'>
@@ -29,7 +32,6 @@ const IndexInscripciones = () => {
             titulo='Inscripciones pendientes'
             data={data.Inscripciones.filter((el) => el.estado === 'PENDIENTE')}
             refetch={refetch}
-            
           />
           <AccordionInscripcion
             titulo='Inscripciones rechazadas'
@@ -37,71 +39,69 @@ const IndexInscripciones = () => {
           />
         </div>
       </div>
+    </PrivateRoute>
   );
 };
 
-const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => (
-  <AccordionStyled>
-    <AccordionSummaryStyled>
-      {titulo} ({data.length})
-    </AccordionSummaryStyled>
-    <AccordionDetailsStyled>
-      <div className='flex'>
-        {data &&
-          data.map((inscripcion) => (
-            <Inscripcion inscripcion={inscripcion} refetch={refetch} />
-          ))}
-      </div>
-    </AccordionDetailsStyled>
-  </AccordionStyled>
-);
+const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => {
+  return (
+    <AccordionStyled>
+      <AccordionSummaryStyled>
+        {titulo} ({data.length})
+      </AccordionSummaryStyled>
+      <AccordionDetailsStyled>
+        <div className='flex'>
+          {data &&
+            data.map((inscripcion) => {
+              return <Inscripcion inscripcion={inscripcion} refetch={refetch} />;
+            })}
+        </div>
+      </AccordionDetailsStyled>
+    </AccordionStyled>
+  );
+};
 
 const Inscripcion = ({ inscripcion, refetch }) => {
-  const [rechazarInscripcion, {data: mutationData, loading: mutationLoading, error: mutationError}] =
-    useMutation( RECHAZAR_INSCRIPCION );
-   
+  const [aprobarInscripcion, { data, loading, error }] = useMutation(APROBAR_INSCRIPCION);
 
   useEffect(() => {
-    if (mutationData) {
+    if (data) {
       toast.success('Inscripcion aprobada con exito');
       refetch();
     }
-  }, [mutationData]);
+  }, [data]);
 
   useEffect(() => {
-    if (mutationError) {
+    if (error) {
       toast.error('Error aprobando la inscripcion');
     }
-  }, [mutationError]);
+  }, [error]);
 
-  const rInscripcion = () => {
-    rechazarInscripcion({
+  const cambiarEstadoInscripcion = () => {
+    aprobarInscripcion({
       variables: {
-        rechazarInscripcionId: inscripcion._id,
+        aprobarInscripcionId: inscripcion._id,
       },
     });
   };
 
   return (
-    <div className='bg-white text-gray-500 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
-      <span>Proyecto: {inscripcion.proyecto.nombre}</span>
-      <span> Estudiante: {inscripcion.estudiante.nombre} {inscripcion.estudiante.apellido}</span>
-      <span>Estado: {inscripcion.estado}</span>
-      {inscripcion.estado === 'PENDIENTE'&& (
-        
+    <div className='bg-gray-900 text-gray-50 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
+      <span>{inscripcion.proyecto.nombre}</span>
+      <span>{inscripcion.estudiante.nombre}</span>
+      <span>{inscripcion.estado}</span>
+      {inscripcion.estado === 'PENDIENTE' && (
         <ButtonLoading
-        onClick={() => {
-          rInscripcion();
-        }}
-        text='Rechazar Inscripcion'
-        mutationLoading={mutationLoading}
-        disabled={false}
-      />
-      )
-      }
-      
+          onClick={() => {
+            cambiarEstadoInscripcion();
+          }}
+          text='Aprobar Inscripcion'
+          loading={loading}
+          disabled={false}
+        />
+      )}
     </div>
-  );
+  ); 
 };
 
 export default IndexInscripciones;

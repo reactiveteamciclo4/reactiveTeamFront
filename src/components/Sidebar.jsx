@@ -16,8 +16,8 @@ const SidebarLinks = () => {
       <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>
       <SidebarRoute to='/inscripciones' title='Aprobacion Inscripciones' icon='fas fa-tasks' />
       </PrivateComponent>
+      <SidebarRoute to='/inscripciones' title='Inscripción' icon='fas fa-clipboard-list' />
       <SidebarRoute to='/avances' title='Avances' icon='fas fa-shoe-prints' />
-      <SidebarRoute to='/category1' title='Inscripción' icon='fas fa-clipboard-list' />
       <SidebarRoute to='/category1/page1' title='Test' icon='fas fa-clipboard-check' />
       <Logout />
     </ul>
@@ -45,7 +45,8 @@ const Logo = () => {
   return (
     <div className='py-3 w-full flex flex-col items-center justify-center' bg-black-800>
       <img src='LOGO REACTIVE TEAM.png' alt='Logo' className='h-38' />
-      <span className='my-2 text-xl font-bold text-center' text-white>GESTIÓN PROYECTOS DE INVESTIGACIÓN</span>
+      {/* cambio color texto a blanco */}
+      <span className='my-2 text-xl font-bold text-center text-white'>GESTIÓN PROYECTOS DE INVESTIGACIÓN</span>
     </div>
   );
 };
@@ -98,7 +99,8 @@ const SidebarRoute = ({ to, title, icon }) => {
         className={({ isActive }) =>
           isActive
             ? 'sidebar-route text-white bg-green-600'
-            : 'sidebar-route text-gray-900 hover:text-white hover:bg-green-400'
+            // cambio color texto a text-gray-400
+            : 'sidebar-route text-gray-400 hover:text-white hover:bg-green-400'
         }
       >
         <div className='flex items-center'>
