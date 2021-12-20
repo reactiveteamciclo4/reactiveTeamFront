@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from 'context/authContext';
+import { useUser } from 'context/userContext';
 import PrivateComponent from './PrivateComponent';
 
 const SidebarLinks = () => {
@@ -13,7 +14,7 @@ const SidebarLinks = () => {
       </PrivateComponent>
       <SidebarRoute to='/proyectos' title='Proyectos' icon='fas fa-chess-rook' />
       <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>
-        <SidebarRoute to='/inscripciones' title='Aprobacion Inscripciones' icon='fas fa-tasks' />
+      <SidebarRoute to='/inscripciones' title='Aprobacion Inscripciones' icon='fas fa-tasks' />
       </PrivateComponent>
       <SidebarRoute to='/page2' title='Avances' icon='fas fa-shoe-prints' />
       <SidebarRoute to='/category1' title='Inscripción' icon='fas fa-clipboard-list' />
@@ -26,8 +27,7 @@ const SidebarLinks = () => {
 const Logout = () => {
   const { setToken } = useAuth();
   const deleteToken = () => {
-    console.log('eliminar token');
-    setToken(null);
+   setToken(null);
   };
   return (
     <li onClick={() => deleteToken()}>
@@ -62,8 +62,10 @@ const Sidebar = () => {
           <SidebarLinks />
         </div>
       </div>
-      <div className='flex md:hidden w-full justify-between bg-gray-800 p-2 text-white'>
-        <i className={`fas fa-${open ? 'times' : 'bars'}`} onClick={() => setOpen(!open)} />
+     <div className='flex md:hidden w-full justify-between bg-gray-800 p-2 text-white'>
+        <button type='button' onClick={() => setOpen(!open)}>
+          <i className={`fas fa-${open ? 'times' : 'bars'}`} />
+        </button>
         <i className='fas fa-home' />
       </div>
       {open && <ResponsiveSidebar />}

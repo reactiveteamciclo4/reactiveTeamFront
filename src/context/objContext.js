@@ -2,6 +2,8 @@ import { createContext, useContext } from 'react';
 
 export const ObjContext = createContext(null);
 
-export const useObj = () => {
+export const useObj = () => useContext(ObjContext);
+
+/*export const useObj = () => {
   return useContext(ObjContext);
-};
+};*/

@@ -11,7 +11,7 @@ const IndexUsuarios = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error('Error consultando los usuarios');
+      toast.error('No se pueden consultar los usuarios');
     }
   }, [error]);
 
@@ -20,17 +20,17 @@ const IndexUsuarios = () => {
   return (
     <PrivateRoute roleList={['ADMINISTRADOR']}>
       <div>
-        Datos Usuarios:
+        <h3><strong> INFORMACIÓN DE USUARIOS </strong></h3>
         <table className='tabla'>
           <thead>
             <tr>
-              <th>Nombre</th>
-              <th>Apellidos</th>
-              <th>Correo</th>
-              <th>Identificación</th>
-              <th>Rol</th>
-              <th>Estado</th>
-              <th>Editar</th>
+              <th>NOMBRE</th>
+              <th>APELLIDOS</th>
+              <th>CORREO</th>
+              <th>IDENTIFICACIÓN</th>
+              <th>ROL</th>
+              <th>ESTADO</th>
+              <th>EDITAR</th>
             </tr>
           </thead>
           <tbody>
@@ -55,7 +55,7 @@ const IndexUsuarios = () => {
                 })}
               </>
             ) : (
-              <div>No autorizado</div>
+              <div>Usuario No autorizado</div>
             )}
           </tbody>
         </table>
