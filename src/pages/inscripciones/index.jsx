@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useUser } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import PrivateRoute from 'components/PrivateRoute';
 import { GET_INSCRIPCIONES } from 'graphql/inscripciones/queries';
@@ -10,16 +10,21 @@ import {
   AccordionSummaryStyled,
   AccordionDetailsStyled,
 } from 'components/Accordion';
+import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 
 const IndexInscripciones = () => {
-  // falta capturar error de query
-  const { data, loading, refetch } = useQuery(GET_INSCRIPCIONES);
 
+  const { data, loading, error, refetch } = useQuery(GET_INSCRIPCIONES);
+  useEffect(() => {
+    if (error) {
+      toast.error('Error consultando la inscripcion');
+    }
+  }, [error]);
   if (loading) return <div>Loading...</div>;
   return (
-
+    <PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}>
       <div className='p-10'>
-        <div>Pagina de inscripciones</div>
+      <div className= 'text-2xl font-semibold'>INSCRIPCIONES</div>
         <div className='my-4'>
           <AccordionInscripcion
             titulo='Inscripciones aprobadas'
@@ -37,6 +42,7 @@ const IndexInscripciones = () => {
           />
         </div>
       </div>
+      </PrivateRoute>
   );
 };
 
