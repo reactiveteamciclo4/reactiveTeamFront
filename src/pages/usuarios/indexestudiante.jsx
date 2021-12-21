@@ -6,21 +6,21 @@ import { Link } from 'react-router-dom';
 import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enums';
 import PrivateRoute from 'components/PrivateRoute';
 
-const IndexUsuarios = () => {
+const IndexEstudiante = () => {
   const { data, error, loading } = useQuery(GET_USUARIOS);
 
   useEffect(() => {
     if (error) {
-      toast.error('No se pueden consultar los usuarios');
+      toast.error('No se pueden consultar los Estudiantes');
     }
   }, [error]);
 
   if (loading) return <div>Cargando....</div>;
 
   return (
-    <PrivateRoute roleList={['ADMINISTRADOR']}>
+    <PrivateRoute roleList={['LIDER', 'ADMINISTRADOR']}>
       <div>
-        <h3><strong> INFORMACIÓN DE USUARIOS </strong></h3>
+        <h3><strong> INFORMACIÓN DE ESTUDIANTES </strong></h3>
         <table className='tabla'>
           <thead>
             <tr>
@@ -46,7 +46,7 @@ const IndexUsuarios = () => {
                       <td>{Enum_Rol[u.rol]}</td>
                       <td>{Enum_EstadoUsuario[u.estado]}</td>
                       <td>
-                        <Link to={`/usuarios/editar/${u._id}`}>
+                        <Link to={`/estudiante/editarestudiante/${u._id}`}>
                           <i className='fas fa-pen text-blue-600 hover:text-yellow-400 cursor-pointer' />
                         </Link>
                       </td>
@@ -64,4 +64,4 @@ const IndexUsuarios = () => {
   );
 };
 
-export default IndexUsuarios;
+export default IndexEstudiante;
