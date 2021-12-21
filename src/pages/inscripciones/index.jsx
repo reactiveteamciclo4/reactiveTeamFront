@@ -33,7 +33,6 @@ const IndexInscripciones = () => {
             titulo='Inscripciones pendientes'
             data={data.Inscripciones.filter((el) => el.estado === 'PENDIENTE')}
             refetch={refetch}
-            
           />
           <AccordionInscripcion
             titulo='Inscripciones rechazadas'
@@ -61,11 +60,12 @@ const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => (
   </AccordionStyled>
 );
 
-const Inscripcion = ({ inscripcion, refetch }) => {
-  const [rechazarInscripcion, {data: mutationData, loading: mutationLoading, error: mutationError}] =
-    useMutation( RECHAZAR_INSCRIPCION );
-   
+const Inscripcion = ({ inscripcion }) => {
 
+const InA = ({ refetch }) => {
+  const [aprobarInscripcion, {data: mutationData, loading: mutationLoading, error: mutationError}] =
+    useMutation ( APROBAR_INSCRIPCION );
+   
   useEffect(() => {
     if (mutationData) {
       toast.success('Inscripcion aprobada con exito');
@@ -79,13 +79,56 @@ const Inscripcion = ({ inscripcion, refetch }) => {
     }
   }, [mutationError]);
 
-  const rInscripcion = () => {
-    rechazarInscripcion({
+ const aInscripcion = () => {
+    aprobarInscripcion({
       variables: {
-        rechazarInscripcionId: inscripcion._id,
+        aprobarInscripcionId: inscripcion._id,
       },
     });
-  };
+  }; 
+  return (
+      <ButtonLoading
+        onClick={() => {
+          aInscripcion();
+        }}
+        text='Aceptar'
+        mutationLoading={mutationLoading}
+        disabled={false}
+      />);
+    };
+
+const InR = ({ refetch }) => {
+      const [rechazarInscripcion, {data: mutationData, loading: mutationLoading, error: mutationError}] =
+      useMutation( RECHAZAR_INSCRIPCION );
+      useEffect(() => {
+        if (mutationData) {
+          toast.success('Inscripcion rechazada');
+          refetch();
+        }
+      }, [mutationData]);
+      useEffect(() => {
+        if (mutationError) {
+          toast.error('Error rechazando la inscripcion');
+        }
+      }, [mutationError]);
+      const rInscripcion = () => {
+        rechazarInscripcion({
+          variables: {
+            rechazarInscripcionId: inscripcion._id,
+          },
+        });
+      };
+      return (
+        <ButtonLoading  
+            onClick={() => {
+              rInscripcion();
+            }}
+            text='Rechazar'
+            mutationLoading={mutationLoading}
+            disabled={false}
+          />
+          );
+        };
 
   return (
     <div className='bg-white text-gray-900 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
@@ -93,18 +136,10 @@ const Inscripcion = ({ inscripcion, refetch }) => {
      <div className='text-lg font-semibold'><span> Estudiante: {inscripcion.estudiante.nombre} {inscripcion.estudiante.apellido}</span> </div> 
       <span>Estado: {inscripcion.estado}</span>
       {inscripcion.estado === 'PENDIENTE'&& (
-        
-        <ButtonLoading
-        onClick={() => {
-          rInscripcion();
-        }}
-        text='Rechazar Inscripcion'
-        mutationLoading={mutationLoading}
-        disabled={false}
-      />
-      )
-      }
-      
+        <div className='flex justify-between'>
+          < InA/> <span> </span>
+        < InR/> </div>
+      )}      
     </div>
   );
 };
