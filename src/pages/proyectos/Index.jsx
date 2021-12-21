@@ -270,11 +270,11 @@ const EditarObjetivo = ({
   );
 };
 
-const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
+const InscripcionProyecto = ({idProyecto, estado, inscripciones }) => {
   const [estadoInscripcion, setEstadoInscripcion] = useState('');
 
   // falta captura del error de la mutacion
-  const [crearInscripcion, { data, loading }] = useMutation(CREAR_INSCRIPCION);
+  const [crearInscripcion, { data, loading, error }] = useMutation(CREAR_INSCRIPCION);
   const { userData } = useUser();
 
   useEffect(() => {

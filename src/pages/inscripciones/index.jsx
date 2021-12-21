@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useUser } from 'react';
+import React, { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import PrivateRoute from 'components/PrivateRoute';
 import { GET_INSCRIPCIONES } from 'graphql/inscripciones/queries';
@@ -10,7 +10,6 @@ import {
   AccordionSummaryStyled,
   AccordionDetailsStyled,
 } from 'components/Accordion';
-import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 
 const IndexInscripciones = () => {
 
@@ -48,11 +47,11 @@ const IndexInscripciones = () => {
 
 const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => (
   <AccordionStyled>
-    <AccordionSummaryStyled>
+    <AccordionSummaryStyled className='uppercase font-bold ' expandIcon={< i className='fas fa-chevron-down'/>} >
       {titulo} ({data.length})
     </AccordionSummaryStyled>
     <AccordionDetailsStyled>
-      <div className='flex'>
+      <div className='flex flex-wrap justify-between'>
         {data &&
           data.map((inscripcion) => (
             <Inscripcion inscripcion={inscripcion} refetch={refetch} />
@@ -89,9 +88,9 @@ const Inscripcion = ({ inscripcion, refetch }) => {
   };
 
   return (
-    <div className='bg-white text-gray-500 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
+    <div className='bg-white text-gray-900 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
       <span>Proyecto: {inscripcion.proyecto.nombre}</span>
-      <span> Estudiante: {inscripcion.estudiante.nombre} {inscripcion.estudiante.apellido}</span>
+     <div className='text-lg font-semibold'><span> Estudiante: {inscripcion.estudiante.nombre} {inscripcion.estudiante.apellido}</span> </div> 
       <span>Estado: {inscripcion.estado}</span>
       {inscripcion.estado === 'PENDIENTE'&& (
         
