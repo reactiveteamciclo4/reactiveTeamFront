@@ -20,15 +20,15 @@ import 'styles/tabla.css';
 import NuevoProyecto from 'pages/proyectos/NuevoProyecto';
 import IndexInscripciones from 'pages/inscripciones';
 import { from } from 'apollo-boost';
-import IndexAvances from 'pages/avances';
+import IndexAvance from 'pages/avances';
 import EditarAvance from 'pages/avances/editar';
-import NuevoAvance from 'pages/avances/NuevoAvance';
+
 
 const httpLink = createHttpLink({
-  uri: 'https://servidor-reactive-team.herokuapp.com/graphql',
+  //uri: 'https://servidor-reactive-team.herokuapp.com/graphql',
   //uri: 'https://front-reactive-team.herokuapp.com/'
 
-  //uri: 'http://localhost:4000/graphql',
+  uri: 'http://localhost:4000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -89,9 +89,8 @@ function App() {
                 <Route path='/proyectos' element={<IndexProyectos />} />
                 <Route path='/proyectos/nuevo' element={<NuevoProyecto />} />
                 <Route path='/inscripciones' element={<IndexInscripciones />} />
-                <Route path='/avances' element={<IndexAvances/>} />
+                <Route path='/avances/:projectid' element={<IndexAvance />} />>
                 <Route path='/avances/editar/:_id' element={<EditarAvance/>} />
-                <Route path='/avances/nuevo' element={<NuevoAvance />} />
                 <Route path='category1' element={<IndexCategory1 />} />
                 <Route path='category1/page1' element={<Category1 />} />
               </Route>
