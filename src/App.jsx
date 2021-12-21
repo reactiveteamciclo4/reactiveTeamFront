@@ -8,7 +8,9 @@ import Index from 'pages/Index';
 import IndexCategory1 from 'pages/category1/Index';
 import Category1 from 'pages/category1/CategoryPage1';
 import IndexUsuarios from 'pages/usuarios';
+import IndexEstudiante from 'pages/usuarios/indexestudiante'
 import EditarUsuario from 'pages/usuarios/editar';
+import EditarEstudiante from 'pages/usuarios/editarestudiante';
 import AuthLayout from 'layouts/AuthLayout';
 import Register from 'pages/auth/register';
 import Login from 'pages/auth/login';
@@ -20,15 +22,16 @@ import 'styles/tabla.css';
 import NuevoProyecto from 'pages/proyectos/NuevoProyecto';
 import IndexInscripciones from 'pages/inscripciones';
 import { from } from 'apollo-boost';
+import Profile from 'pages/profile';
 import IndexAvances from 'pages/avances';
 import EditarAvance from 'pages/avances/editar';
 import NuevoAvance from 'pages/avances/NuevoAvance';
 
 const httpLink = createHttpLink({
-  uri: 'https://servidor-reactive-team.herokuapp.com/graphql',
+  //uri: 'https://servidor-reactive-team.herokuapp.com/graphql',
   //uri: 'https://front-reactive-team.herokuapp.com/'
 
-  //uri: 'http://localhost:4000/graphql',
+  uri: 'http://localhost:4000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -72,6 +75,7 @@ function App() {
         identificacion: decoded.identificacion,
         correo: decoded.correo,
         rol: decoded.rol,
+        foto: decoded.foto,
       });
     }
   }, [authToken]);
@@ -89,15 +93,21 @@ function App() {
                 <Route path='/proyectos' element={<IndexProyectos />} />
                 <Route path='/proyectos/nuevo' element={<NuevoProyecto />} />
                 <Route path='/inscripciones' element={<IndexInscripciones />} />
+                <Route path='/perfil' element={<Profile />} />
                 <Route path='/avances' element={<IndexAvances/>} />
                 <Route path='/avances/editar/:_id' element={<EditarAvance/>} />
                 <Route path='/avances/nuevo' element={<NuevoAvance />} />
+
+                <Route path='/estudiantes' element={<IndexEstudiante />} />
+                <Route path='/estudiantes/editarestudiante/:_id' element={<EditarEstudiante />} />
+
                 <Route path='category1' element={<IndexCategory1 />} />
                 <Route path='category1/page1' element={<Category1 />} />
               </Route>
               <Route path='/auth' element={<AuthLayout />}>
                 <Route path='register' element={<Register />} />
                 <Route path='login' element={<Login />} />
+                
               </Route>
             </Routes>
           </BrowserRouter>
