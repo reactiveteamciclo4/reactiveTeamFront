@@ -6,6 +6,7 @@ import PrivateComponent from 'components/PrivateComponent';
 
 const SidebarLinks = () => (    
     <ul className='mt-12'>
+      <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER', 'ESTUDIANTE']}>
       <SidebarRoute to='' title='Inicio' icon='fas fa-house-user' />
       <SidebarRouteImagen to='/perfil' title='Perfil' icon='fas fa-user' />
       <PrivateComponent roleList={['ADMINISTRADOR']}>
@@ -20,6 +21,7 @@ const SidebarLinks = () => (
       </PrivateComponent>
       <SidebarRoute to='/avances' title='Avances' icon='fas fa-shoe-prints' />
       <SidebarRoute to='/category1/page1' title='Test' icon='fas fa-clipboard-check' />
+      </PrivateComponent>
       <Logout />
     </ul>
   );
@@ -45,7 +47,7 @@ const Logo = () => (
     <div className='py-3 w-full flex flex-col items-center justify-center' bg-black-800>
       <img src='LOGO REACTIVE TEAM.png' alt='Logo' className='h-38' />
       {/* cambio color texto a blanco */}
-      <span className='my-2 text-xl font-bold text-center text-white'>GESTIÓN PROYECTOS DE INVESTIGACIÓN</span>
+      <span className='my-2 text-lg font-bold text-center text-white'>GESTIÓN PROYECTOS DE INVESTIGACIÓN</span>
     </div>
   );
 

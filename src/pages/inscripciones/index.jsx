@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useUser } from 'react';
+import React, { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import PrivateRoute from 'components/PrivateRoute';
 import { GET_INSCRIPCIONES } from 'graphql/inscripciones/queries';
@@ -10,7 +10,6 @@ import {
   AccordionSummaryStyled,
   AccordionDetailsStyled,
 } from 'components/Accordion';
-import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 
 const IndexInscripciones = () => {
 
@@ -34,7 +33,6 @@ const IndexInscripciones = () => {
             titulo='Inscripciones pendientes'
             data={data.Inscripciones.filter((el) => el.estado === 'PENDIENTE')}
             refetch={refetch}
-            
           />
           <AccordionInscripcion
             titulo='Inscripciones rechazadas'
@@ -48,11 +46,11 @@ const IndexInscripciones = () => {
 
 const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => (
   <AccordionStyled>
-    <AccordionSummaryStyled>
+    <AccordionSummaryStyled className='uppercase font-bold ' expandIcon={< i className='fas fa-chevron-down'/>} >
       {titulo} ({data.length})
     </AccordionSummaryStyled>
     <AccordionDetailsStyled>
-      <div className='flex'>
+      <div className='flex flex-wrap justify-between'>
         {data &&
           data.map((inscripcion) => (
             <Inscripcion inscripcion={inscripcion} refetch={refetch} />
@@ -62,11 +60,12 @@ const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => (
   </AccordionStyled>
 );
 
-const Inscripcion = ({ inscripcion, refetch }) => {
-  const [rechazarInscripcion, {data: mutationData, loading: mutationLoading, error: mutationError}] =
-    useMutation( RECHAZAR_INSCRIPCION );
-   
+const Inscripcion = ({ inscripcion }) => {
 
+const InA = ({ refetch }) => {
+  const [aprobarInscripcion, {data: mutationData, loading: mutationLoading, error: mutationError}] =
+    useMutation ( APROBAR_INSCRIPCION );
+   
   useEffect(() => {
     if (mutationData) {
       toast.success('Inscripcion aprobada con exito');
@@ -80,32 +79,67 @@ const Inscripcion = ({ inscripcion, refetch }) => {
     }
   }, [mutationError]);
 
-  const rInscripcion = () => {
-    rechazarInscripcion({
+ const aInscripcion = () => {
+    aprobarInscripcion({
       variables: {
-        rechazarInscripcionId: inscripcion._id,
+        aprobarInscripcionId: inscripcion._id,
       },
     });
-  };
-
+  }; 
   return (
-    <div className='bg-white text-gray-500 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
-      <span>Proyecto: {inscripcion.proyecto.nombre}</span>
-      <span> Estudiante: {inscripcion.estudiante.nombre} {inscripcion.estudiante.apellido}</span>
-      <span>Estado: {inscripcion.estado}</span>
-      {inscripcion.estado === 'PENDIENTE'&& (
-        
-        <ButtonLoading
+      <ButtonLoading
         onClick={() => {
-          rInscripcion();
+          aInscripcion();
         }}
-        text='Rechazar Inscripcion'
+        text='Aceptar'
         mutationLoading={mutationLoading}
         disabled={false}
-      />
-      )
-      }
-      
+      />);
+    };
+
+const InR = ({ refetch }) => {
+      const [rechazarInscripcion, {data: mutationData, loading: mutationLoading, error: mutationError}] =
+      useMutation( RECHAZAR_INSCRIPCION );
+      useEffect(() => {
+        if (mutationData) {
+          toast.success('Inscripcion rechazada');
+          refetch();
+        }
+      }, [mutationData]);
+      useEffect(() => {
+        if (mutationError) {
+          toast.error('Error rechazando la inscripcion');
+        }
+      }, [mutationError]);
+      const rInscripcion = () => {
+        rechazarInscripcion({
+          variables: {
+            rechazarInscripcionId: inscripcion._id,
+          },
+        });
+      };
+      return (
+        <ButtonLoading  
+            onClick={() => {
+              rInscripcion();
+            }}
+            text='Rechazar'
+            mutationLoading={mutationLoading}
+            disabled={false}
+          />
+          );
+        };
+
+  return (
+    <div className='bg-white text-gray-900 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
+      <span>Proyecto: {inscripcion.proyecto.nombre}</span>
+     <div className='text-lg font-semibold'><span> Estudiante: {inscripcion.estudiante.nombre} {inscripcion.estudiante.apellido}</span> </div> 
+      <span>Estado: {inscripcion.estado}</span>
+      {inscripcion.estado === 'PENDIENTE'&& (
+        <div className='flex justify-between'>
+          < InA/> <span> </span>
+        < InR/> </div>
+      )}      
     </div>
   );
 };
