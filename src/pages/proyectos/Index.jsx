@@ -70,6 +70,8 @@ const AccordionProyecto = ({ proyecto }) => {
             <div className='uppercase font-bold text-gray-100 '>
               {proyecto.nombre} - {proyecto.estado}
             </div>
+            
+
           </div>
         </AccordionSummaryStyled>
         <AccordionDetailsStyled>
@@ -90,6 +92,14 @@ const AccordionProyecto = ({ proyecto }) => {
               inscripciones={proyecto.inscripciones}
             />
           </PrivateComponent>
+          <PrivateComponent roleList={['LIDER', 'ADMINISTRADOR']}>
+          <Link
+              to={`/incripciones}`}
+              className='bg-green-700 p-1 rounded-lg text-white my-2 hover:bg-green-500'
+            > 
+              Ver Inscripciones
+            </Link>
+            </PrivateComponent>
           <div>Liderado Por: {proyecto.lider.correo}</div>
           <div className='flex'>
             {proyecto.objetivos.map((objetivo, index) => (
@@ -102,6 +112,8 @@ const AccordionProyecto = ({ proyecto }) => {
               />
             ))}
           </div>
+          
+
         </AccordionDetailsStyled>
       </AccordionStyled>
       <Dialog
@@ -273,7 +285,6 @@ const EditarObjetivo = ({
 const InscripcionProyecto = ({idProyecto, estado, inscripciones }) => {
   const [estadoInscripcion, setEstadoInscripcion] = useState('');
 
-  // falta captura del error de la mutacion
   const [crearInscripcion, { data, loading, error }] = useMutation(CREAR_INSCRIPCION);
   const { userData } = useUser();
 
@@ -292,16 +303,24 @@ const InscripcionProyecto = ({idProyecto, estado, inscripciones }) => {
     if (data) {
       toast.success('inscripcion creada con exito');
     }
-  }, [data]);
+  }, [data]);  
+  useEffect(() => {
+    if (error) {
+      toast.error('Error creando la inscripcion');
+    }
+  }, [error]);
+
 
   const confirmarInscripcion = () => {
     crearInscripcion({
       variables: { proyecto: idProyecto, estudiante: userData._id },
     });
   };
-
   return (
-    <>
+    <>  
+      <div>
+        {estado === 'INACTIVO' && (
+        <span>Proyecto inactivo no se puede inscribir. </span> )} </div>
       {estadoInscripcion !== '' ? (
         <div className='flex flex-col items-start'>
           <span>
@@ -315,18 +334,18 @@ const InscripcionProyecto = ({idProyecto, estado, inscripciones }) => {
             >
               Visualizar Avances
             </Link>
-          )}
-        </div>
+          )}       
+        </div>        
       ) : (
         <ButtonLoading
           onClick={() => confirmarInscripcion()}
           disabled={estado === 'INACTIVO'}
           loading={loading}
           text='Inscribirme en este proyecto'
-        />
-      )}
-    </>
-  );
+        /> 
+      ) }
+     </> 
+  ); 
 };
 
 export default IndexProyectos;
