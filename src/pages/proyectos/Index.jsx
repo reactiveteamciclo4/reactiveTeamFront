@@ -93,13 +93,12 @@ const AccordionProyecto = ({ proyecto }) => {
             />
           </PrivateComponent>
           <PrivateComponent roleList={['LIDER', 'ADMINISTRADOR']}>
-          <div className='flex'> <Link 
-          to={`/inscripciones/${proyecto._id}`}
-          className='bg-green-700 p-2 rounded-lg text-white my-2 hover:bg-green-500'> 
-          Ver Inscripciones  
-          </Link> </div>
-            </PrivateComponent> 
-          {/**/}
+            <div className='flex'> <Link 
+              to={`/inscripciones/${proyecto._id}`}
+              className='bg-green-700 p-2 rounded-lg text-white my-2 hover:bg-green-500'> 
+              Ver Inscripciones  
+            </Link> </div>
+          </PrivateComponent> 
           <div>Liderado Por: {proyecto.lider.correo}</div>
           <div className='flex'>
             {proyecto.objetivos.map((objetivo, index) => (
@@ -323,7 +322,7 @@ const InscripcionProyecto = ({idProyecto, estado, inscripciones }) => {
     });
   };
   return (
-    <>  
+    <> 
       <div>
         {estado === 'INACTIVO' && (
         <span>Proyecto inactivo no se puede inscribir. </span> )} </div>
@@ -342,13 +341,13 @@ const InscripcionProyecto = ({idProyecto, estado, inscripciones }) => {
             </Link>
           )}       
         </div>        
-      ) : (
+      ) : ( <PrivateComponent roleList={['ESTUDIANTE']}>
         <ButtonLoading
           onClick={() => confirmarInscripcion()}
           disabled={estado === 'INACTIVO'}
           loading={loading}
           text='Inscribirme en este proyecto'
-          /> 
+          /> </PrivateComponent>
           ) }
          </> 
       );
