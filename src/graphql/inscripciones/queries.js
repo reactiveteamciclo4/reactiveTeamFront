@@ -21,5 +21,22 @@ const GET_INSCRIPCIONES = gql`
    }
 }
 `;
+const GET_INSCRIPCIONESPROY = gql`
+  query FiltrarInscrip($idProyecto: String!) {
+  filtrarInscrip(idProyecto: $idProyecto) {
+    _id
+    estado
+    fechaIngreso
+    fechaEgreso
+    estudiante {
+      _id
+      nombre
+      apellido
+      identificacion
+      correo
+    }
+  }
+}
+`;
 
-export { GET_INSCRIPCIONES};
+export { GET_INSCRIPCIONES, GET_INSCRIPCIONESPROY};

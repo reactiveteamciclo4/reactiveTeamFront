@@ -81,7 +81,7 @@ const AccordionProyecto = ({ proyecto }) => {
               onClick={() => {
                 setShowDialog(true);
               }}
-            >
+            > Editar Estado 
               <i className='mx-4 fas fa-pen text-yellow-600 hover:text-yellow-400' />
             </button>
           </PrivateComponent>
@@ -93,13 +93,13 @@ const AccordionProyecto = ({ proyecto }) => {
             />
           </PrivateComponent>
           <PrivateComponent roleList={['LIDER', 'ADMINISTRADOR']}>
-          <Link
-              to={`/incripciones}`}
-              className='bg-green-700 p-1 rounded-lg text-white my-2 hover:bg-green-500'
-            > 
-              Ver Inscripciones
-            </Link>
-            </PrivateComponent>
+          <div className='flex'> <Link 
+          to={`/inscripciones/${proyecto._id}`}
+          className='bg-green-700 p-2 rounded-lg text-white my-2 hover:bg-green-500'> 
+          Ver Inscripciones  
+          </Link> </div>
+            </PrivateComponent> 
+          {/**/}
           <div>Liderado Por: {proyecto.lider.correo}</div>
           <div className='flex'>
             {proyecto.objetivos.map((objetivo, index) => (
@@ -133,7 +133,7 @@ const FormEditProyecto = ({ _id }) => {
 
   // falta capturar error de la mutacion
   // falta toast de success
-  const [editarProyecto, { loading }] = useMutation(EDITAR_PROYECTO);
+  const [editarProyecto, { data:dataMutation, loading }] = useMutation(EDITAR_PROYECTO);
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -144,6 +144,13 @@ const FormEditProyecto = ({ _id }) => {
       },
     });
   };
+
+   useEffect(() => {
+    if (dataMutation) {
+      toast.success('edición aprobada con exito');
+      ;
+    }
+  }, [dataMutation]);
 
   return (
     <div className='p-4'>
@@ -310,7 +317,6 @@ const InscripcionProyecto = ({idProyecto, estado, inscripciones }) => {
     }
   }, [error]);
 
-
   const confirmarInscripcion = () => {
     crearInscripcion({
       variables: { proyecto: idProyecto, estudiante: userData._id },
@@ -342,10 +348,12 @@ const InscripcionProyecto = ({idProyecto, estado, inscripciones }) => {
           disabled={estado === 'INACTIVO'}
           loading={loading}
           text='Inscribirme en este proyecto'
-        /> 
-      ) }
-     </> 
-  ); 
-};
+          /> 
+          ) }
+         </> 
+      );
+     };
+  
+
 
 export default IndexProyectos;

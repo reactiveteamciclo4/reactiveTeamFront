@@ -1,7 +1,16 @@
 import React, { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import PrivateRoute from 'components/PrivateRoute';
-import { GET_INSCRIPCIONES } from 'graphql/inscripciones/queries';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useParams
+} from "react-router-dom";
+import ReactDOM from "react-dom";
+import { useUser } from 'context/userContext';
+import { nanoid } from 'nanoid';
+import { GET_INSCRIPCIONES, GET_INSCRIPCIONESPROY } from 'graphql/inscripciones/queries';
 import { APROBAR_INSCRIPCION, RECHAZAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 import ButtonLoading from 'components/ButtonLoading';
 import { toast } from 'react-toastify';
@@ -10,37 +19,43 @@ import {
   AccordionSummaryStyled,
   AccordionDetailsStyled,
 } from 'components/Accordion';
-import { useParams } from 'react-router-dom';
 
-
-const IndexInscripciones = () => {
-
-  const { projectid } = useParams();
-
-  const { data, loading, error, refetch } = useQuery(GET_INSCRIPCIONES);
+const InscripcionesP = () => {
+  const {projectid } = useParams();
+  const { data, loading, error, refetch } = 
+    useQuery(GET_INSCRIPCIONESPROY, {
+      variables: {
+        proyecto: projectid,
+      },
+  });
+  
   useEffect(() => {
     if (error) {
       toast.error('Error consultando la inscripcion');
     }
   }, [error]);
   if (loading) return <div>Loading...</div>;
+  
   return (
+    
+    
     <PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}>
       <div className='p-10'>
-      <div className= 'text-2xl font-semibold'>INSCRIPCIONES</div>
-        <div className='my-4'>
-          <AccordionInscripcion
+      <div className= 'text-2xl font-semibold'>INSCRIPCIONES DEL PROYECTO </div>
+       <div className='my-4'>
+       <AccordionInscripcion
             titulo='Inscripciones aprobadas'
-            data={data.Inscripciones.filter((el) => el.proyecto._id===projectid && el.estado === 'ACEPTADO')}
+            data={data.FiltrarInscrip(projectid)
+              .filter((el) => el.estado === 'ACEPTADO')}
           />
           <AccordionInscripcion
             titulo='Inscripciones pendientes'
-            data={data.Inscripciones.filter((el) => el.proyecto._id===projectid && el.estado === 'PENDIENTE')}
+            data={data.Inscripciones.filter((el) => el.estado === 'PENDIENTE')}
             refetch={refetch}
           />
           <AccordionInscripcion
             titulo='Inscripciones rechazadas'
-            data={data.Inscripciones.filter((el) => el.proyecto._id===projectid && el.estado === 'RECHAZADO')}
+            data={data.Inscripciones.filter((el) => el.estado === 'RECHAZADO')}
           />
         </div>
       </div>
@@ -144,8 +159,8 @@ const InR = ({ refetch }) => {
           < InA/> <span> </span>
         < InR/> </div>
       )}      
-    </div>
+    </div> 
   );
 };
 
-export default IndexInscripciones;
+export default InscripcionesP;

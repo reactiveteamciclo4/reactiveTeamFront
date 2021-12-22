@@ -14,8 +14,7 @@ const SidebarLinks = () => {
         <SidebarRoute to='/usuarios' title='Usuarios' icon='fas fa-user-tie' />
       </PrivateComponent>
       <SidebarRoute to='/proyectos' title='Proyectos' icon='fas fa-chess-rook' />
-      <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>
-      {/* <SidebarRoute to='/inscripciones' title='Aprobacion Inscripciones' icon='fas fa-tasks' /> */}
+      <PrivateComponent roleList={['ADMINISTRADOR']}>
       <SidebarRoute to='/inscripciones' title='Inscripción' icon='fas fa-clipboard-list' />
       </PrivateComponent>
       <SidebarRoute to='/avances' title='Avances' icon='fas fa-shoe-prints' />

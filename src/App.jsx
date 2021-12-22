@@ -22,6 +22,7 @@ import IndexInscripciones from 'pages/inscripciones';
 import { from } from 'apollo-boost';
 import IndexAvance from 'pages/avances';
 import EditarAvance from 'pages/avances/editar';
+import InscripcionesP from 'pages/inscripciones/iProyect';
 
 
 const httpLink = createHttpLink({
@@ -89,6 +90,7 @@ function App() {
                 <Route path='/proyectos' element={<IndexProyectos />} />
                 <Route path='/proyectos/nuevo' element={<NuevoProyecto />} />
                 <Route path='/inscripciones' element={<IndexInscripciones />} />
+                <Route path='/inscripciones/:projectid' element={<InscripcionesP />} />
                 <Route path='/avances/:projectid' element={<IndexAvance />} />
                 <Route path='/avances/editar/:_id' element={<EditarAvance/>} />
                 <Route path='category1' element={<IndexCategory1 />} />
