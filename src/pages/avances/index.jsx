@@ -16,13 +16,13 @@ import { EDITAR_AVANCE } from 'graphql/avances/mutations';
 
 
 const IndexAvance = () => {
-  const { projectid } = useParams();
+  const { idProyecto } = useParams();
   const [openDialog, setOpenDialog] = useState(false);
 
   // falta captura de error del loading
   const { data, loading } = useQuery(GET_AVANCES, {
     variables: {
-      proyecto: projectid,
+      proyecto: idProyecto,
     },
   });
 
@@ -31,7 +31,7 @@ const IndexAvance = () => {
   return (
     <div className='flex flex-col p-10 items-center w-full'>
       <h1 className='text-2xl font-bold text-gray-900 my-2'>
-        Avances para el proyecto {projectid}
+        Avances para el proyecto {idProyecto}
       </h1>
       <div className='my-2 self-end'>
         <button
@@ -48,7 +48,7 @@ const IndexAvance = () => {
         data.Avances.map((avance) => <Avance avance={avance} />)
       )}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <CrearAvance proyecto={projectid} setOpenDialog={setOpenDialog} />
+        <CrearAvance proyecto={idProyecto} setOpenDialog={setOpenDialog} />
       </Dialog>
     </div>
   );
