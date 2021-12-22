@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_USUARIOS } from 'graphql/usuarios/queries';
 import { toast } from 'react-toastify';
@@ -8,19 +8,49 @@ import PrivateRoute from 'components/PrivateRoute';
 
 const IndexUsuarios = () => {
   const { data, error, loading } = useQuery(GET_USUARIOS);
+  const[busqueda, setBusqueda] = useState('');
+  const[filtro, setFiltro] = useState([]);
 
-  useEffect(() => {
-    if (error) {
-      toast.error('No se pueden consultar los usuarios');
-    }
-  }, [error]);
+  useEffect(() =>{
+    if(data){
+    data.Usuarios.forEach((elemento)=>{
+      filtro.push(elemento);
+    });
+  }
+   
+}, [data]);
+
+useEffect(()=>{
+ 
+  console.log(busqueda)
+  if(data){
+    setFiltro(data.Usuarios.filter(elemento=>{
+    return JSON.stringify(elemento).toLowerCase().includes(busqueda.toLowerCase());
+     }));
+  }
+ 
+ },[busqueda, data]);
+
+ useEffect(() => {
+  if (error) {
+    toast.error('No se pueden consultar los usuarios');
+  }
+}, [error]);
+
 
   if (loading) return <div>Cargando....</div>;
 
   return (
-    <PrivateRoute roleList={['ADMINISTRADOR']}>
+    <PrivateRoute roleList={['ADMINISTRADOR','LIDER']}>
       <div>
         <h3><strong> INFORMACIÓN DE USUARIOS </strong></h3>
+        <div className='flex flex-row justify-end'>
+          <input
+            onChange ={e=>setBusqueda(e.target.value)}
+            value={busqueda}
+            placeholder='Buscar'
+            className='border-2 border-gray-700 px-3 py-1 rounded-md focus:outline-none focus:border-indigo-200'/>
+        </div>
         <table className='tabla'>
           <thead>
             <tr>
@@ -36,7 +66,7 @@ const IndexUsuarios = () => {
           <tbody>
             {data && data.Usuarios ? (
               <>
-                {data.Usuarios.map((u) => {
+                {filtro.map((u) => {
                   return (
                     <tr key={u._id}>
                       <td>{u.nombre}</td>

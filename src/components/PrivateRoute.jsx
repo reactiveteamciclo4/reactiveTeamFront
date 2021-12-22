@@ -8,7 +8,7 @@ const PrivateRoute = ({ roleList, children }) => {
     return children;
   }
 
-  return <div data-testid="not-authorized" className='text-4xl text-red-500 '>No está autorizado para ver este sitio.</div>;
+  return <div data-testid="not-authorized" className='text-4xl text-red-500 '>No estás autorizado para ver este sitio.</div>;
 };
 
 export default PrivateRoute;

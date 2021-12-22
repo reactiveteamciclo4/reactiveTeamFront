@@ -8,9 +8,9 @@ import Index from 'pages/Index';
 import IndexCategory1 from 'pages/category1/Index';
 import Category1 from 'pages/category1/CategoryPage1';
 import IndexUsuarios from 'pages/usuarios';
-import IndexEstudiante from 'pages/usuarios/indexestudiante'
+//import IndexEstudiante from 'pages/usuarios/indexestudiante'
 import EditarUsuario from 'pages/usuarios/editar';
-import EditarEstudiante from 'pages/usuarios/editarestudiante';
+//import EditarEstudiante from 'pages/usuarios/editarestudiante';
 import AuthLayout from 'layouts/AuthLayout';
 import Register from 'pages/auth/register';
 import Login from 'pages/auth/login';
@@ -99,8 +99,7 @@ function App() {
                 <Route path='/perfil' element={<Profile />} />
                 <Route path='/avances' element={<IndexAvances/>} />
                 <Route path='/avances/nuevo' element={<NuevoAvance />} />
-                <Route path='/estudiantes' element={<IndexEstudiante />} />
-                <Route path='/estudiantes/editarestudiante/:_id' element={<EditarEstudiante />} />
+                
                 <Route path='category1' element={<IndexCategory1 />} />
                 <Route path='category1/page1' element={<Category1 />} />
               </Route>
