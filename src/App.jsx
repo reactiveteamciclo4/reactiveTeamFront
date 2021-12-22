@@ -27,6 +27,8 @@ import Profile from 'pages/profile';
 import IndexAvances from 'pages/avances';
 import EditarAvance from 'pages/avances/editar';
 import NuevoAvance from 'pages/avances/editar';
+import InscripcionesP from 'pages/inscripciones/iProyect';
+
 
 const httpLink = createHttpLink({
   //uri: 'https://servidor-reactive-team.herokuapp.com/graphql',
@@ -94,6 +96,7 @@ function App() {
                 <Route path='/proyectos' element={<IndexProyectos />} />
                 <Route path='/proyectos/nuevo' element={<NuevoProyecto />} />
                 <Route path='/inscripciones' element={<IndexInscripciones />} />
+                <Route path='/inscripciones/:projectid' element={<InscripcionesP />} />
                 <Route path='/avances/:projectid' element={<IndexAvance />} />
                 <Route path='/avances/editar/:_id' element={<EditarAvance/>} />
                 <Route path='/perfil' element={<Profile />} />

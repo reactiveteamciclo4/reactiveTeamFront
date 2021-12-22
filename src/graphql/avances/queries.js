@@ -14,7 +14,6 @@ const GET_AVANCES = gql`
   }
 `;
 
-
 const GET_AVANCE = gql`
 query Avance($_id: String!) {
   Avance(_id: $_id) {

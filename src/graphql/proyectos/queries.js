@@ -7,6 +7,7 @@ const PROYECTOS = gql`
       nombre
       estado
       objetivos {
+        _id
         descripcion
         tipo
       }
@@ -15,6 +16,7 @@ const PROYECTOS = gql`
         correo
       }
       inscripciones {
+        _id
         estado
         estudiante {
           _id

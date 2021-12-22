@@ -41,7 +41,7 @@ const NuevoProyecto = () => {
     e.preventDefault();
 
    // formData.objetivos = Object.values(formData.objetivos);
-    //formData.presupuesto = parseFloat(formData.presupuesto);
+   formData.presupuesto = parseFloat(formData.presupuesto);
 
     crearProyecto({
       variables: formData,

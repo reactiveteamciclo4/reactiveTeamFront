@@ -16,11 +16,11 @@ const SidebarLinks = () => (
       <PrivateComponent roleList={['LIDER']}>
       <SidebarRoute to='/usuarios' title='Estudiantes' icon='fas fa-user-graduate' />
       </PrivateComponent>
-      <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>
+      <PrivateComponent roleList={['ADMINISTRADOR']}>
       <SidebarRoute to='/inscripciones' title='Inscripción' icon='fas fa-clipboard-list' />
       </PrivateComponent>
-      <SidebarRoute to='/avances' title='Avances' icon='fas fa-shoe-prints' />
-      <SidebarRoute to='/category1/page1' title='Test' icon='fas fa-clipboard-check' />
+      {/*<SidebarRoute to='/avances' title='Avances' icon='fas fa-shoe-prints' />
+      <SidebarRoute to='/category1/page1' title='Test' icon='fas fa-clipboard-check' /> */}
       </PrivateComponent>
       <Logout />
     </ul>
