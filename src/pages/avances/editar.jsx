@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_AVANCE } from 'graphql/avances/queries';
+import { GET_AVANCES } from 'graphql/avances/queries';
 import Input from 'components/Input';
 import ButtonLoading from 'components/ButtonLoading';
 import useFormData from 'hooks/useFormData';
@@ -21,7 +21,7 @@ const EditarAvance = () => {
     data: queryData,
     error: queryError,
     loading: queryLoading,
-  } = useQuery(GET_AVANCE, {
+  } = useQuery(GET_AVANCES, {
     variables: { _id },
   });
 
@@ -59,9 +59,9 @@ const EditarAvance = () => {
 
   return (
     <div className='flew flex-col w-full h-full items-center justify-center p-10'>
-      <Link to='/avances'>
+     
         <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
-      </Link>
+      
       <h1 className='m-4 text-3xl text-gray-800 font-bold text-center'>Editar Avance</h1>
       <form
         onSubmit={submitForm}
@@ -74,19 +74,10 @@ const EditarAvance = () => {
             label='Descripcion:'
             type='text'
             name='descripcion'
-            defaultValue={queryData.Avance.descripcion}
+            defaultValue={queryData.Avances.descripcion}
             required={true}
           />
-       
-        <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>
-          <Input
-            label='Observaciones:'
-            type='text'
-            name='observaciones'
-            defaultValue={queryData.Avance.observaciones}
-            required={true}
-          />
-        </PrivateComponent>
+      
 
 
         <ButtonLoading

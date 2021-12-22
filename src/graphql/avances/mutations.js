@@ -11,6 +11,7 @@ mutation EditarAvance(
     descripcion: $descripcion, 
     
     ) {
+    _id
     descripcion
   }
   
@@ -36,13 +37,12 @@ const CREAR_AVANCE = gql`
 `;
 
 const CREAR_OBSERVACION = gql`
-mutation($_id: String!, $observaciones: String!)  {
-  crearObservacion(_id: $_id, observaciones: $observaciones
-    ) {
+mutation CrearObservacion($_id: String!, $observacion: String!) {
+  crearObservacion(_id: $_id, observacion: $observacion) {
     _id
+    observaciones
   }
 }
-
 `;
 
 export { EDITAR_AVANCE, CREAR_OBSERVACION, CREAR_AVANCE};
