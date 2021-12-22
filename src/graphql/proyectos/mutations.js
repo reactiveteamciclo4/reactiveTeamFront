@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 const EDITAR_PROYECTO = gql`
-mutation EditarProyecto($id: String!, $nombre: String!, $presupuesto: Float!, $estado: Enum_EstadoProyecto!) {
-  editarProyecto(_id: $id, nombre: $nombre, presupuesto: $presupuesto, estado: $estado) {
+mutation EditarProyecto($_id: String!, $nombre: String, $presupuesto: Float, $estado: Enum_EstadoProyecto) {
+  editarProyecto(_id: $_id, nombre: $nombre, presupuesto: $presupuesto, estado: $estado) {
     _id
     estado
   }

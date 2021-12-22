@@ -127,7 +127,7 @@ const AccordionProyecto = ({ proyecto }) => {
   );
 };
 
-const FormEditProyecto = ({ _id }) => {
+const FormEditProyecto = ({ _id, estado }) => {
   const { form, formData, updateFormData } = useFormData();
 
   // falta capturar error de la mutacion
@@ -140,6 +140,7 @@ const FormEditProyecto = ({ _id }) => {
       variables: {
         _id,
         campos: formData,
+        estado,
       },
     });
   };

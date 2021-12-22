@@ -28,6 +28,7 @@ import IndexAvances from 'pages/avances';
 import EditarAvance from 'pages/avances/editar';
 import NuevoAvance from 'pages/avances/editar';
 import InscripcionesP from 'pages/inscripciones/iProyect';
+//import NuevoAvance from 'pages/avances/NuevoAvance';
 
 
 const httpLink = createHttpLink({
@@ -97,11 +98,10 @@ function App() {
                 <Route path='/proyectos/nuevo' element={<NuevoProyecto />} />
                 <Route path='/inscripciones' element={<IndexInscripciones />} />
                 <Route path='/inscripciones/:projectid' element={<InscripcionesP />} />
-                <Route path='/avances/:projectid' element={<IndexAvance />} />
+                <Route path='/avances' element={<IndexAvances/>} />
+                <Route path='/avances/:projectid' element={<IndexAvance />} />>
                 <Route path='/avances/editar/:_id' element={<EditarAvance/>} />
                 <Route path='/perfil' element={<Profile />} />
-                <Route path='/avances' element={<IndexAvances/>} />
-                <Route path='/avances/nuevo' element={<NuevoAvance />} />
                 
                 <Route path='category1' element={<IndexCategory1 />} />
                 <Route path='category1/page1' element={<Category1 />} />
