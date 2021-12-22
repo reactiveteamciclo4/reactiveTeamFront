@@ -32,10 +32,10 @@ import InscripcionesP from 'pages/inscripciones/iProyect';
 
 
 const httpLink = createHttpLink({
-  //uri: 'https://servidor-reactive-team.herokuapp.com/graphql',
+  uri: 'https://servidor-reactive-team.herokuapp.com/graphql',
   //uri: 'https://front-reactive-team.herokuapp.com/'
 
-  uri: 'http://localhost:4000/graphql',
+  //uri: 'http://localhost:4000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {

@@ -37,7 +37,7 @@ const CREAR_AVANCE = gql`
 
 const CREAR_OBSERVACION = gql`
 mutation($_id: String!, $observaciones: String!)  {
-  crearObservacion(_id: $_id, observaciones: $observaciones
+  crearObservacion(_id: $_id, observacion: $observacion
     ) {
     _id
   }
